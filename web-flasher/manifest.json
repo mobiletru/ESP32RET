@@ -1,0 +1,26 @@
+{
+  "name": "ESP32RET",
+  "version": "618",
+  "new_install_prompt_erase": true,
+  "new_install_improv_wait_time": 0,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "firmware/stable/bootloader.bin", "offset": 4096 },
+        { "path": "firmware/stable/partitions.bin", "offset": 32768 },
+        { "path": "firmware/stable/boot_app0.bin", "offset": 57344 },
+        { "path": "firmware/stable/firmware.bin", "offset": 65536 }
+      ]
+    },
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        { "path": "firmware/stable-s3/bootloader.bin", "offset": 0 },
+        { "path": "firmware/stable-s3/partitions.bin", "offset": 32768 },
+        { "path": "firmware/stable-s3/boot_app0.bin", "offset": 57344 },
+        { "path": "firmware/stable-s3/firmware.bin", "offset": 65536 }
+      ]
+    }
+  ]
+}

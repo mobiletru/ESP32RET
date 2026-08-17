@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flash ESP32RET</title>
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      max-width: 40rem;
+      margin: 2rem auto;
+      padding: 0 1.25rem;
+      line-height: 1.5;
+      background: #111;
+      color: #eee;
+    }
+    h1 { font-size: 1.4rem; }
+    code { background: #222; padding: 0.1rem 0.35rem; border-radius: 4px; }
+    .box { border: 1px solid #333; border-radius: 8px; padding: 1rem 1.1rem; margin: 1.25rem 0; }
+    esp-web-install-button { display: block; margin-top: 0.75rem; }
+  </style>
+  <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+</head>
+<body>
+  <h1>Flash ESP32RET</h1>
+  <p>Connect the board over USB. Use Chrome or Edge (Web Serial). The installer picks ESP32 vs ESP32-S3 from the chip.</p>
+  <div class="box">
+    <p>Hold <strong>BOOT</strong> if the port does not appear, then click Connect.</p>
+    <esp-web-install-button manifest="./manifest.json"></esp-web-install-button>
+  </div>
+  <p>After install, the serial console is <code>1000000</code> baud. Set board type if needed:</p>
+  <ul>
+    <li><code>SYSTYPE=0</code> Macchina A0</li>
+    <li><code>SYSTYPE=1</code> EVTV ESP32</li>
+    <li><code>SYSTYPE=2</code> Macchina 5-CAN</li>
+    <li><code>SYSTYPE=3</code> EVTV ESP32-S3</li>
+  </ul>
+  <p>Default WiFi AP password: <code>aBigSecret</code></p>
+</body>
+</html>

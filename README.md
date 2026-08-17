@@ -6,6 +6,74 @@ Reverse Engineering Tool running on ESP32 based hardware. Supports both EVTV ESP
 There is a precompiled binary version of this program here:
 https://www.savvycan.com/ESP32RET_Updater.zip
 
+#### Flash from the browser (easiest)
+
+No toolchain needed. On the machine with the board plugged in:
+
+1. Download the branch as a ZIP: https://github.com/mobiletru/ESP32RET/archive/refs/heads/cursor/flash-esp32ret-a258.zip (or `git clone -b cursor/flash-esp32ret-a258 https://github.com/mobiletru/ESP32RET.git`)
+2. Serve the flasher:
+   - **Windows**: double-click `web-flasher\serve.cmd`
+   - **Linux/macOS**: `cd web-flasher && python3 -m http.server 8789`
+3. Open http://127.0.0.1:8789 in **Chrome or Edge**, click **Connect**, pick the board's serial port (e.g. COM3), then **Install**.
+
+Prebuilt ESP32 and ESP32-S3 images are committed under `web-flasher/firmware/`; the installer picks the right one from the detected chip. Rebuild and refresh them with `./scripts/build.sh all && ./scripts/package-flasher.sh`.
+
+No Python either? Use Espressif's hosted flasher at https://espressif.github.io/esptool-js/ in Chrome: connect at 921600, add the files from `web-flasher/firmware/stable/` at these addresses, then Program: `bootloader.bin` @ 0x1000, `partitions.bin` @ 0x8000, `boot_app0.bin` @ 0xE000, `firmware.bin` @ 0x10000. (For ESP32-S3 use the `stable-s3` folder and put the bootloader at 0x0.)
+
+#### Flash (USB, PlatformIO)
+
+This repo builds with [PlatformIO](https://platformio.org/). First time on a new machine, run the setup script (installs the PlatformIO CLI, udev rules, and dialout group membership on Linux):
+
+```bash
+./scripts/local-setup.sh
+```
+
+Then, with the board plugged in:
+
+```bash
+# ESP32 (4MB) — EVTV ESP32-Due / Macchina A0
+./scripts/flash.sh
+./scripts/flash.sh stable /dev/ttyUSB0
+
+# ESP32-S3 (8MB)
+./scripts/flash.sh stable-s3 /dev/ttyACM0
+```
+
+On **Windows** (board on e.g. COM3):
+
+```bat
+flash.cmd COM3
+flash.cmd COM3 stable-s3
+```
+
+Build without flashing:
+
+```bash
+./scripts/build.sh          # classic ESP32
+./scripts/build.sh stable-s3
+./scripts/build.sh all
+```
+
+`scripts/flash.sh` installs the PlatformIO CLI with pip if `pio` is missing. After a successful flash the serial console is **1 Mbit**. Set board type over serial if needed:
+
+- `SYSTYPE=0` Macchina A0
+- `SYSTYPE=1` EVTV ESP32
+- `SYSTYPE=2` Macchina 5-CAN
+- `SYSTYPE=3` EVTV ESP32-S3
+
+Default WiFi AP: `ESP32RETSSID` / `A0RETSSID`, password `aBigSecret`.
+
+CI on this fork builds `firmware.bin`, `bootloader.bin`, and `partitions.bin` for both envs. To flash those artifacts with esptool instead of PlatformIO:
+
+```bash
+# ESP32 (bootloader at 0x1000)
+esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 921600 write_flash \
+  0x1000 bootloader.bin 0x8000 partitions.bin 0x10000 firmware.bin
+
+# ESP32-S3 (bootloader at 0x0)
+esptool.py --chip esp32s3 --port /dev/ttyACM0 --baud 921600 write_flash \
+  0x0 bootloader.bin 0x8000 partitions.bin 0x10000 firmware.bin
+```
 
 #### Requirements:
 
