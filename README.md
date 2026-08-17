@@ -10,13 +10,15 @@ https://www.savvycan.com/ESP32RET_Updater.zip
 
 No toolchain needed. On the machine with the board plugged in:
 
-```bash
-git clone -b cursor/flash-esp32ret-a258 https://github.com/mobiletru/ESP32RET.git
-cd ESP32RET/web-flasher
-python3 -m http.server 8789
-```
+1. Download the branch as a ZIP: https://github.com/mobiletru/ESP32RET/archive/refs/heads/cursor/flash-esp32ret-a258.zip (or `git clone -b cursor/flash-esp32ret-a258 https://github.com/mobiletru/ESP32RET.git`)
+2. Serve the flasher:
+   - **Windows**: double-click `web-flasher\serve.cmd`
+   - **Linux/macOS**: `cd web-flasher && python3 -m http.server 8789`
+3. Open http://127.0.0.1:8789 in **Chrome or Edge**, click **Connect**, pick the board's serial port (e.g. COM3), then **Install**.
 
-Open http://127.0.0.1:8789 in **Chrome or Edge**, click **Connect**, pick the board's serial port, then **Install**. Prebuilt ESP32 and ESP32-S3 images are committed under `web-flasher/firmware/`; the installer picks the right one from the detected chip. Rebuild and refresh them with `./scripts/build.sh all && ./scripts/package-flasher.sh`.
+Prebuilt ESP32 and ESP32-S3 images are committed under `web-flasher/firmware/`; the installer picks the right one from the detected chip. Rebuild and refresh them with `./scripts/build.sh all && ./scripts/package-flasher.sh`.
+
+No Python either? Use Espressif's hosted flasher at https://espressif.github.io/esptool-js/ in Chrome: connect at 921600, add the files from `web-flasher/firmware/stable/` at these addresses, then Program: `bootloader.bin` @ 0x1000, `partitions.bin` @ 0x8000, `boot_app0.bin` @ 0xE000, `firmware.bin` @ 0x10000. (For ESP32-S3 use the `stable-s3` folder and put the bootloader at 0x0.)
 
 #### Flash (USB, PlatformIO)
 
