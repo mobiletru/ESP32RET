@@ -20,7 +20,13 @@ Open http://127.0.0.1:8789 in **Chrome or Edge**, click **Connect**, pick the bo
 
 #### Flash (USB, PlatformIO)
 
-This repo builds with [PlatformIO](https://platformio.org/). On a machine with the board plugged in:
+This repo builds with [PlatformIO](https://platformio.org/). First time on a new machine, run the setup script (installs the PlatformIO CLI, udev rules, and dialout group membership on Linux):
+
+```bash
+./scripts/local-setup.sh
+```
+
+Then, with the board plugged in:
 
 ```bash
 # ESP32 (4MB) — EVTV ESP32-Due / Macchina A0
