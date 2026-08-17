@@ -6,7 +6,19 @@ Reverse Engineering Tool running on ESP32 based hardware. Supports both EVTV ESP
 There is a precompiled binary version of this program here:
 https://www.savvycan.com/ESP32RET_Updater.zip
 
-#### Flash (USB)
+#### Flash from the browser (easiest)
+
+No toolchain needed. On the machine with the board plugged in:
+
+```bash
+git clone -b cursor/flash-esp32ret-a258 https://github.com/mobiletru/ESP32RET.git
+cd ESP32RET/web-flasher
+python3 -m http.server 8789
+```
+
+Open http://127.0.0.1:8789 in **Chrome or Edge**, click **Connect**, pick the board's serial port, then **Install**. Prebuilt ESP32 and ESP32-S3 images are committed under `web-flasher/firmware/`; the installer picks the right one from the detected chip. Rebuild and refresh them with `./scripts/build.sh all && ./scripts/package-flasher.sh`.
+
+#### Flash (USB, PlatformIO)
 
 This repo builds with [PlatformIO](https://platformio.org/). On a machine with the board plugged in:
 

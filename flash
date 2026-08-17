@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# USB-flash ESP32RET. Same as ./scripts/flash.sh
+# Usage: ./flash [stable|stable-s3] [PORT]
+exec "$(cd "$(dirname "$0")" && pwd)/scripts/flash.sh" "$@"
