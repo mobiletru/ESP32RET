@@ -38,6 +38,15 @@ fi
 echo "Building and flashing env=$ENV${PORT:+ port=$PORT}"
 pio device list || true
 
+if [[ -z "$PORT" ]]; then
+  if [[ ! -e /dev/ttyUSB0 && ! -e /dev/ttyACM0 ]]; then
+    echo "No USB serial device found (/dev/ttyUSB0 or /dev/ttyACM0)." >&2
+    echo "Plug in the ESP32 and re-run, or pass the port explicitly." >&2
+    echo "This environment only has /dev/ttyS0, which is not an ESP32." >&2
+    exit 2
+  fi
+fi
+
 ARGS=(run -e "$ENV" -t upload)
 if [[ -n "$PORT" ]]; then
   ARGS+=(--upload-port "$PORT")
