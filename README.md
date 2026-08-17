@@ -37,6 +37,13 @@ Then, with the board plugged in:
 ./scripts/flash.sh stable-s3 /dev/ttyACM0
 ```
 
+On **Windows** (board on e.g. COM3):
+
+```bat
+flash.cmd COM3
+flash.cmd COM3 stable-s3
+```
+
 Build without flashing:
 
 ```bash
