@@ -6,6 +6,47 @@ Reverse Engineering Tool running on ESP32 based hardware. Supports both EVTV ESP
 There is a precompiled binary version of this program here:
 https://www.savvycan.com/ESP32RET_Updater.zip
 
+#### Flash (USB)
+
+This repo builds with [PlatformIO](https://platformio.org/). On a machine with the board plugged in:
+
+```bash
+# ESP32 (4MB) — EVTV ESP32-Due / Macchina A0
+./scripts/flash.sh
+./scripts/flash.sh stable /dev/ttyUSB0
+
+# ESP32-S3 (8MB)
+./scripts/flash.sh stable-s3 /dev/ttyACM0
+```
+
+Build without flashing:
+
+```bash
+./scripts/build.sh          # classic ESP32
+./scripts/build.sh stable-s3
+./scripts/build.sh all
+```
+
+`scripts/flash.sh` installs the PlatformIO CLI with pip if `pio` is missing. After a successful flash the serial console is **1 Mbit**. Set board type over serial if needed:
+
+- `SYSTYPE=0` Macchina A0
+- `SYSTYPE=1` EVTV ESP32
+- `SYSTYPE=2` Macchina 5-CAN
+- `SYSTYPE=3` EVTV ESP32-S3
+
+Default WiFi AP: `ESP32RETSSID` / `A0RETSSID`, password `aBigSecret`.
+
+CI on this fork builds `firmware.bin`, `bootloader.bin`, and `partitions.bin` for both envs. To flash those artifacts with esptool instead of PlatformIO:
+
+```bash
+# ESP32 (bootloader at 0x1000)
+esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 921600 write_flash \
+  0x1000 bootloader.bin 0x8000 partitions.bin 0x10000 firmware.bin
+
+# ESP32-S3 (bootloader at 0x0)
+esptool.py --chip esp32s3 --port /dev/ttyACM0 --baud 921600 write_flash \
+  0x0 bootloader.bin 0x8000 partitions.bin 0x10000 firmware.bin
+```
 
 #### Requirements:
 
